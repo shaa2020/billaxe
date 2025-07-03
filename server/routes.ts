@@ -10,6 +10,7 @@ const invoiceItemSchema = z.object({
   rate: z.string(),
   vatPercent: z.string(),
   total: z.string(),
+  unitType: z.string().default("item"),
 });
 
 const createInvoiceSchema = insertInvoiceSchema.extend({

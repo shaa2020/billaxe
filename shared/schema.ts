@@ -38,6 +38,7 @@ export const invoiceItems = pgTable("invoice_items", {
   rate: decimal("rate", { precision: 10, scale: 2 }).notNull(),
   vatPercent: decimal("vat_percent", { precision: 5, scale: 2 }).notNull().default("0.00"),
   total: decimal("total", { precision: 10, scale: 2 }).notNull(),
+  unitType: text("unit_type").notNull().default("item"), // "item", "hour", "day", etc.
 });
 
 export const templates = pgTable("templates", {
@@ -65,6 +66,7 @@ export const templateItems = pgTable("template_items", {
   quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(),
   rate: decimal("rate", { precision: 10, scale: 2 }).notNull(),
   vatPercent: decimal("vat_percent", { precision: 5, scale: 2 }).notNull().default("0.00"),
+  unitType: text("unit_type").notNull().default("item"), // "item", "hour", "day", etc.
 });
 
 export const insertInvoiceSchema = createInsertSchema(invoices).omit({

@@ -57,12 +57,22 @@ export class MemStorage implements IStorage {
       ...invoiceData,
       id,
       createdAt: new Date(),
+      companyTagline: invoiceData.companyTagline || null,
+      companyLogo: invoiceData.companyLogo || null,
+      fromPhone: invoiceData.fromPhone || null,
+      fromVAT: invoiceData.fromVAT || null,
+      toPhone: invoiceData.toPhone || null,
+      toVAT: invoiceData.toVAT || null,
+      paymentInstructions: invoiceData.paymentInstructions || null,
+      invoiceNotes: invoiceData.invoiceNotes || null,
     };
 
     const items: InvoiceItem[] = itemsData.map(item => ({
       ...item,
       id: this.currentInvoiceItemId++,
       invoiceId: id,
+      vatPercent: item.vatPercent || "0.00",
+      unitType: item.unitType || "item",
     }));
 
     this.invoices.set(id, invoice);
@@ -100,6 +110,8 @@ export class MemStorage implements IStorage {
       ...item,
       id: this.currentInvoiceItemId++,
       invoiceId: id,
+      vatPercent: item.vatPercent || "0.00",
+      unitType: item.unitType || "item",
     }));
 
     this.invoices.set(id, updatedInvoice);
@@ -120,12 +132,20 @@ export class MemStorage implements IStorage {
       ...templateData,
       id,
       createdAt: new Date(),
+      companyTagline: templateData.companyTagline || null,
+      companyLogo: templateData.companyLogo || null,
+      fromPhone: templateData.fromPhone || null,
+      fromVAT: templateData.fromVAT || null,
+      paymentInstructions: templateData.paymentInstructions || null,
+      invoiceNotes: templateData.invoiceNotes || null,
     };
 
     const items: TemplateItem[] = itemsData.map(item => ({
       ...item,
       id: this.currentTemplateItemId++,
       templateId: id,
+      vatPercent: item.vatPercent || "0.00",
+      unitType: item.unitType || "item",
     }));
 
     this.templates.set(id, template);

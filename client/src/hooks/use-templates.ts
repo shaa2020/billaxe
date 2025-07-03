@@ -21,6 +21,7 @@ interface TemplateData {
     quantity: string;
     rate: string;
     vatPercent: string;
+    unitType: string;
   }>;
 }
 
@@ -52,6 +53,7 @@ export function useTemplates() {
           quantity: item.quantity,
           rate: item.rate,
           vatPercent: item.vatPercent,
+          unitType: item.unitType,
         })),
       };
       

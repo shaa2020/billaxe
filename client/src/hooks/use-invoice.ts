@@ -10,6 +10,7 @@ interface InvoiceItem {
   rate: string;
   vatPercent: string;
   total: string;
+  unitType: string;
 }
 
 interface InvoiceData {
@@ -43,6 +44,7 @@ const defaultItem = (): InvoiceItem => ({
   rate: "0.00",
   vatPercent: "0",
   total: "0.00",
+  unitType: "item",
 });
 
 const generateInvoiceNumber = () => {

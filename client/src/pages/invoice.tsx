@@ -6,9 +6,11 @@ import { InvoiceTotals } from "@/components/invoice/invoice-totals";
 import { TemplateModal } from "@/components/invoice/template-modal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { useInvoice } from "@/hooks/use-invoice";
 import { useTemplates } from "@/hooks/use-templates";
 import { generatePDF } from "@/lib/pdf-generator";
+import { formatCurrency } from "@/lib/currency";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Save, 
@@ -194,19 +196,94 @@ export default function InvoicePage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
-        <Card id="invoice-content" className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-          <InvoiceHeader 
-            invoiceData={invoiceData}
-            onUpdate={updateInvoiceData}
-          />
+      <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <Card id="invoice-content" className="bg-white dark:bg-gray-800 shadow-lg overflow-hidden">
+          {/* Professional Header */}
+          <div className="p-8 pb-0">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {invoiceData.companyName || 'ShansIT'}
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {invoiceData.companyTagline || 'Professional Services'}
+                </p>
+              </div>
+              <div className="text-right">
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white">INVOICE</h2>
+              </div>
+            </div>
+
+            {/* Invoice Details Row */}
+            <div className="border-t-2 border-gray-200 dark:border-gray-600 pt-6 mb-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Bill To */}
+                <div>
+                  <div className="mb-4">
+                    <span className="text-sm font-medium text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-300 px-2 py-1 rounded">
+                      BILL TO:
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    <Input
+                      type="text"
+                      placeholder="Client Name"
+                      value={invoiceData.toName}
+                      onChange={(e) => updateInvoiceData({ toName: e.target.value })}
+                      className="border-0 p-0 font-semibold text-lg focus:ring-0 bg-transparent"
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Client Address"
+                      value={invoiceData.toAddress}
+                      onChange={(e) => updateInvoiceData({ toAddress: e.target.value })}
+                      className="border-0 p-0 text-sm focus:ring-0 bg-transparent"
+                    />
+                    <Input
+                      type="email"
+                      placeholder="Client Email"
+                      value={invoiceData.toEmail}
+                      onChange={(e) => updateInvoiceData({ toEmail: e.target.value })}
+                      className="border-0 p-0 text-sm focus:ring-0 bg-transparent"
+                    />
+                  </div>
+                </div>
+
+                {/* Invoice Info */}
+                <div className="text-right space-y-2">
+                  <div className="flex justify-end items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">NUMBER:</span>
+                    <Input
+                      type="text"
+                      value={invoiceData.invoiceNumber}
+                      onChange={(e) => updateInvoiceData({ invoiceNumber: e.target.value })}
+                      className="w-24 border-0 p-0 text-right font-medium focus:ring-0 bg-transparent"
+                    />
+                  </div>
+                  <div className="flex justify-end items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">DATE:</span>
+                    <Input
+                      type="date"
+                      value={invoiceData.invoiceDate}
+                      onChange={(e) => updateInvoiceData({ invoiceDate: e.target.value })}
+                      className="w-32 border-0 p-0 text-right font-medium focus:ring-0 bg-transparent"
+                    />
+                  </div>
+                  <div className="flex justify-end items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">DUE DATE:</span>
+                    <Input
+                      type="date"
+                      value={invoiceData.dueDate}
+                      onChange={(e) => updateInvoiceData({ dueDate: e.target.value })}
+                      className="w-32 border-0 p-0 text-right font-medium focus:ring-0 bg-transparent"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <div className="p-8">
-            <InvoiceForm 
-              invoiceData={invoiceData}
-              onUpdate={updateInvoiceData}
-            />
-            
+          <div className="px-8">
             <ItemsTable 
               items={invoiceData.items}
               currency={invoiceData.currency}
@@ -215,48 +292,59 @@ export default function InvoicePage() {
               onRemoveItem={removeItem}
             />
             
-            <InvoiceTotals 
-              subtotal={subtotal}
-              vatTotal={vatTotal}
-              grandTotal={grandTotal}
-              currency={invoiceData.currency}
-            />
-
-            {/* Notes Section */}
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-                  <Save className="mr-2 text-blue-600" size={16} />
-                  Payment Instructions
-                </h4>
-                <textarea 
-                  value={invoiceData.paymentInstructions || ''}
-                  onChange={(e) => updateInvoiceData({ paymentInstructions: e.target.value })}
-                  rows={6} 
-                  placeholder="Enter payment instructions, bank details, etc."
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              </div>
-              <div>
-                <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-                  <Eye className="mr-2 text-blue-600" size={16} />
-                  Notes & Comments
-                </h4>
-                <textarea 
-                  value={invoiceData.invoiceNotes || ''}
-                  onChange={(e) => updateInvoiceData({ invoiceNotes: e.target.value })}
-                  rows={6} 
-                  placeholder="Additional notes, terms, or comments"
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
+            {/* Totals Section */}
+            <div className="flex justify-end mb-8">
+              <div className="w-80">
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">SUBTOTAL:</span>
+                    <span className="font-medium">{formatCurrency(subtotal, invoiceData.currency)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">VAT:</span>
+                    <span className="font-medium">{formatCurrency(vatTotal, invoiceData.currency)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">TOTAL:</span>
+                    <span className="font-medium">{formatCurrency(grandTotal, invoiceData.currency)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">PAID:</span>
+                    <span className="font-medium">{formatCurrency(0, invoiceData.currency)}</span>
+                  </div>
+                </div>
+                
+                {/* Balance Due */}
+                <div className="bg-gray-900 dark:bg-gray-700 text-white p-4 rounded">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold">BALANCE DUE</span>
+                    <span className="text-2xl font-bold">{formatCurrency(grandTotal, invoiceData.currency)}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                <p className="mb-2">Terms & Conditions: Payment is due within the specified terms. Late payments may incur additional charges.</p>
-                <p>This invoice was generated on {new Date().toLocaleDateString()} | {invoiceData.companyName || 'Your Company'} | All rights reserved</p>
+            {/* Payment Instructions and Comments */}
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Payment instructions</h4>
+                <textarea 
+                  value={invoiceData.paymentInstructions || ''}
+                  onChange={(e) => updateInvoiceData({ paymentInstructions: e.target.value })}
+                  rows={4} 
+                  placeholder="Enter payment instructions, bank details, etc."
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Comments</h4>
+                <textarea 
+                  value={invoiceData.invoiceNotes || ''}
+                  onChange={(e) => updateInvoiceData({ invoiceNotes: e.target.value })}
+                  rows={4} 
+                  placeholder="Additional notes, terms, or comments"
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+                />
               </div>
             </div>
           </div>
