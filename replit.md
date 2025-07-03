@@ -18,7 +18,7 @@ This is a full-stack invoice generation application built with a modern tech sta
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
-- **Database**: PostgreSQL with Drizzle ORM
+- **Database**: PostgreSQL with Drizzle ORM (DatabaseStorage implementation)
 - **Database Provider**: Neon serverless PostgreSQL
 - **API Pattern**: RESTful endpoints with JSON responses
 - **Development**: Hot reload with Vite middleware integration
@@ -98,6 +98,7 @@ This is a full-stack invoice generation application built with a modern tech sta
 ## Changelog
 
 - July 03, 2025. Initial setup
+- July 03, 2025. Added PostgreSQL database with Drizzle ORM, switched from MemStorage to DatabaseStorage implementation
 
 ## User Preferences
 

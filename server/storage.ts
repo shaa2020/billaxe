@@ -14,6 +14,8 @@ import {
   type InvoiceWithItems,
   type TemplateWithItems
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Invoice operations
@@ -175,4 +177,131 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getInvoice(id: number): Promise<InvoiceWithItems | undefined> {
+    const [invoice] = await db.select().from(invoices).where(eq(invoices.id, id));
+    if (!invoice) return undefined;
+
+    const items = await db.select().from(invoiceItems).where(eq(invoiceItems.invoiceId, id));
+    return { ...invoice, items };
+  }
+
+  async getAllInvoices(): Promise<Invoice[]> {
+    return await db.select().from(invoices).orderBy(invoices.createdAt);
+  }
+
+  async createInvoice(invoiceData: InsertInvoice, itemsData: InsertInvoiceItem[]): Promise<InvoiceWithItems> {
+    const [invoice] = await db
+      .insert(invoices)
+      .values({
+        ...invoiceData,
+        companyTagline: invoiceData.companyTagline || null,
+        companyLogo: invoiceData.companyLogo || null,
+        fromPhone: invoiceData.fromPhone || null,
+        fromVAT: invoiceData.fromVAT || null,
+        toPhone: invoiceData.toPhone || null,
+        toVAT: invoiceData.toVAT || null,
+        paymentInstructions: invoiceData.paymentInstructions || null,
+        invoiceNotes: invoiceData.invoiceNotes || null,
+      })
+      .returning();
+
+    const items = await db
+      .insert(invoiceItems)
+      .values(
+        itemsData.map(item => ({
+          ...item,
+          invoiceId: invoice.id,
+          vatPercent: item.vatPercent || "0.00",
+          unitType: item.unitType || "item",
+        }))
+      )
+      .returning();
+
+    return { ...invoice, items };
+  }
+
+  async updateInvoice(id: number, invoiceData: Partial<InsertInvoice>, itemsData: InsertInvoiceItem[]): Promise<InvoiceWithItems> {
+    const [invoice] = await db
+      .update(invoices)
+      .set(invoiceData)
+      .where(eq(invoices.id, id))
+      .returning();
+
+    if (!invoice) {
+      throw new Error('Invoice not found');
+    }
+
+    // Delete existing items and insert new ones
+    await db.delete(invoiceItems).where(eq(invoiceItems.invoiceId, id));
+    
+    const items = await db
+      .insert(invoiceItems)
+      .values(
+        itemsData.map(item => ({
+          ...item,
+          invoiceId: id,
+          vatPercent: item.vatPercent || "0.00",
+          unitType: item.unitType || "item",
+        }))
+      )
+      .returning();
+
+    return { ...invoice, items };
+  }
+
+  async deleteInvoice(id: number): Promise<boolean> {
+    await db.delete(invoiceItems).where(eq(invoiceItems.invoiceId, id));
+    const result = await db.delete(invoices).where(eq(invoices.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  async createTemplate(templateData: InsertTemplate, itemsData: InsertTemplateItem[]): Promise<TemplateWithItems> {
+    const [template] = await db
+      .insert(templates)
+      .values({
+        ...templateData,
+        companyTagline: templateData.companyTagline || null,
+        companyLogo: templateData.companyLogo || null,
+        fromPhone: templateData.fromPhone || null,
+        fromVAT: templateData.fromVAT || null,
+        paymentInstructions: templateData.paymentInstructions || null,
+        invoiceNotes: templateData.invoiceNotes || null,
+      })
+      .returning();
+
+    const items = await db
+      .insert(templateItems)
+      .values(
+        itemsData.map(item => ({
+          ...item,
+          templateId: template.id,
+          vatPercent: item.vatPercent || "0.00",
+          unitType: item.unitType || "item",
+        }))
+      )
+      .returning();
+
+    return { ...template, items };
+  }
+
+  async getTemplate(id: number): Promise<TemplateWithItems | undefined> {
+    const [template] = await db.select().from(templates).where(eq(templates.id, id));
+    if (!template) return undefined;
+
+    const items = await db.select().from(templateItems).where(eq(templateItems.templateId, id));
+    return { ...template, items };
+  }
+
+  async getAllTemplates(): Promise<Template[]> {
+    return await db.select().from(templates).orderBy(templates.createdAt);
+  }
+
+  async deleteTemplate(id: number): Promise<boolean> {
+    await db.delete(templateItems).where(eq(templateItems.templateId, id));
+    const result = await db.delete(templates).where(eq(templates.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+}
+
+export const storage = new DatabaseStorage();
