@@ -1,6 +1,4 @@
-import { CapacitorConfig } from '@capacitor/cli';
-
-const config: CapacitorConfig = {
+const config = {
   appId: 'com.billaxe.invoicemaker',
   appName: 'BillAxe',
   webDir: 'dist/public',
