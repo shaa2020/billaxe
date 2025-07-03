@@ -5,9 +5,9 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-if (!process.env.DATABASE_URL) {
+if (!process.env.DATABASE_URL2) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "Something went wrong! Please check your environment variables. DATABASE_URL2 is not set.",
   );
 }
 
