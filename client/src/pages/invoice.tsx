@@ -69,27 +69,29 @@ export default function InvoicePage() {
   const handleDownloadPDF = async () => {
     const invoiceElement = document.getElementById('invoice-content');
     if (invoiceElement) {
-      // Temporarily remove max-width constraints for PDF generation
-      const originalStyles = {
-        maxWidth: invoiceElement.style.maxWidth,
-        width: invoiceElement.style.width,
-      };
+      console.log('Starting PDF generation...', invoiceElement);
+      console.log('Element content:', invoiceElement.innerHTML.substring(0, 200));
       
-      invoiceElement.style.maxWidth = 'none';
-      invoiceElement.style.width = '210mm'; // A4 width
-      
-      // Wait a bit for styles to apply
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      generatePDF(invoiceElement, `invoice-${invoiceData.invoiceNumber}.pdf`);
-      
-      // Restore original styles
-      invoiceElement.style.maxWidth = originalStyles.maxWidth;
-      invoiceElement.style.width = originalStyles.width;
-      
+      try {
+        generatePDF(invoiceElement, `invoice-${invoiceData.invoiceNumber}.pdf`);
+        toast({
+          title: "Success",
+          description: "PDF download started!",
+        });
+      } catch (error) {
+        console.error('PDF generation error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to generate PDF",
+          variant: "destructive",
+        });
+      }
+    } else {
+      console.error('Invoice element not found');
       toast({
-        title: "Success",
-        description: "PDF downloaded successfully!",
+        title: "Error",
+        description: "Invoice content not found",
+        variant: "destructive",
       });
     }
   };
