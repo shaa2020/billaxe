@@ -73,10 +73,53 @@
     page-break-before: always; 
   }
   body { 
-    background: white !important; 
+    background: white !important;
+    color: black !important;
+    font-family: Arial, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  .bg-gradient-to-r {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  .bg-gray-900, .bg-gray-700 {
+    background: #1f2937 !important;
+    color: white !important;
+  }
+  .text-white {
+    color: white !important;
+  }
+  .bg-blue-500 {
+    background: #3b82f6 !important;
+    color: white !important;
+  }
+  .bg-gradient-to-r, .brand-gradient {
     background: hsl(220, 91%, 59%) !important;
+    color: white !important;
+  }
+  table {
+    border-collapse: collapse !important;
+  }
+  th, td {
+    border: 1px solid #d1d5db !important;
+  }
+  .border-gray-200 {
+    border-color: #d1d5db !important;
+  }
+  .border-blue-400 {
+    border-color: #60a5fa !important;
+  }
+  /* Ensure full height is captured */
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .max-w-4xl {
+    max-width: none !important;
+    width: 100% !important;
   }
 }
 

@@ -66,10 +66,27 @@ export default function InvoicePage() {
     }
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     const invoiceElement = document.getElementById('invoice-content');
     if (invoiceElement) {
+      // Temporarily remove max-width constraints for PDF generation
+      const originalStyles = {
+        maxWidth: invoiceElement.style.maxWidth,
+        width: invoiceElement.style.width,
+      };
+      
+      invoiceElement.style.maxWidth = 'none';
+      invoiceElement.style.width = '210mm'; // A4 width
+      
+      // Wait a bit for styles to apply
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       generatePDF(invoiceElement, `invoice-${invoiceData.invoiceNumber}.pdf`);
+      
+      // Restore original styles
+      invoiceElement.style.maxWidth = originalStyles.maxWidth;
+      invoiceElement.style.width = originalStyles.width;
+      
       toast({
         title: "Success",
         description: "PDF downloaded successfully!",
