@@ -20,6 +20,7 @@ import {
   FolderOpen, 
   Trash2, 
   Eye,
+  EyeOff,
   Moon,
   Sun
 } from "lucide-react";
@@ -27,6 +28,7 @@ import { useTheme } from "@/components/theme-provider";
 
 export default function InvoicePage() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [showCompanyInfo, setShowCompanyInfo] = useState(true);
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
   
@@ -191,6 +193,24 @@ export default function InvoicePage() {
               </Button>
               
               <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTemplateModal(true)}
+                  className="gap-2"
+                >
+                  <Save className="h-4 w-4" />
+                  Templates
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCompanyInfo(!showCompanyInfo)}
+                  className="gap-2"
+                >
+                  {showCompanyInfo ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showCompanyInfo ? 'Hide' : 'Show'} Company
+                </Button>
                 <Button 
                   onClick={handleSaveInvoice}
                   disabled={saveInvoice.isPending}
@@ -220,14 +240,24 @@ export default function InvoicePage() {
           {/* Professional Header */}
           <div className="p-8 pb-0">
             <div className="flex justify-between items-start mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                  {invoiceData.companyName || 'ShansIT'}
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {invoiceData.companyTagline || 'Professional Services'}
-                </p>
-              </div>
+              {showCompanyInfo && (
+                <div>
+                  <Input
+                    type="text"
+                    placeholder="Company Name"
+                    value={invoiceData.companyName}
+                    onChange={(e) => updateInvoiceData({ companyName: e.target.value })}
+                    className="text-3xl font-bold text-gray-900 dark:text-white mb-2 border-0 bg-transparent p-0 focus-visible:ring-0"
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Company Tagline"
+                    value={invoiceData.companyTagline}
+                    onChange={(e) => updateInvoiceData({ companyTagline: e.target.value })}
+                    className="text-gray-600 dark:text-gray-400 border-0 bg-transparent p-0 focus-visible:ring-0"
+                  />
+                </div>
+              )}
               <div className="text-right">
                 <h2 className="text-4xl font-bold text-gray-900 dark:text-white">INVOICE</h2>
               </div>
