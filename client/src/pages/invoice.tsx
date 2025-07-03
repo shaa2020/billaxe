@@ -174,10 +174,20 @@ export default function InvoicePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="bg-blue-600 p-2 rounded-lg">
-                <Save className="text-white text-xl" />
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="24" cy="24" r="22" fill="currentColor" stroke="white" strokeWidth="2"/>
+                  <rect x="18" y="14" width="3" height="20" fill="#8B4513" rx="1.5"/>
+                  <path d="M15 16 L27 16 Q30 18 30 22 Q30 26 27 28 L15 28 Q12 24 15 16 Z" fill="#E5E7EB" stroke="#9CA3AF" strokeWidth="1"/>
+                  <rect x="25" y="20" width="12" height="16" fill="white" stroke="#D1D5DB" strokeWidth="1" rx="1"/>
+                  <line x1="27" y1="23" x2="35" y2="23" stroke="#6B7280" strokeWidth="0.5"/>
+                  <line x1="27" y1="25" x2="35" y2="25" stroke="#6B7280" strokeWidth="0.5"/>
+                  <line x1="27" y1="27" x2="35" y2="27" stroke="#6B7280" strokeWidth="0.5"/>
+                  <line x1="27" y1="29" x2="33" y2="29" stroke="#6B7280" strokeWidth="0.5"/>
+                  <text x="31" y="34" fontFamily="Arial, sans-serif" fontSize="6" fontWeight="bold" fill="#10B981">$</text>
+                </svg>
               </div>
               <div>
-                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Invoice Maker Pro</h1>
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">BillAxe</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Professional Invoice Generator</p>
               </div>
             </div>

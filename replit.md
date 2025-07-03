@@ -1,4 +1,4 @@
-# Professional Invoice Maker Pro
+# BillAxe - Professional Invoice Maker
 
 ## Overview
 
@@ -98,7 +98,9 @@ This is a full-stack invoice generation application built with a modern tech sta
 ## Changelog
 
 - July 03, 2025. Initial setup
-- July 03, 2025. Added PostgreSQL database with Drizzle ORM, switched from MemStorage to DatabaseStorage implementation
+- July 03, 2025. Added PostgreSQL database with Drizzle ORM, switched from MemStorage to DatabaseStorage implementation  
+- July 03, 2025. Rebranded application to "BillAxe" with custom logo and Android Studio preparation
+- July 03, 2025. Fixed company information editing, added hide/show toggle, improved PDF generation
 
 ## User Preferences
 

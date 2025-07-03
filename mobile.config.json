@@ -1,0 +1,51 @@
+{
+  "name": "BillAxe",
+  "displayName": "BillAxe - Invoice Maker",
+  "description": "Professional invoice generator for freelancers and small businesses",
+  "version": "1.0.0",
+  "homepage": "https://billaxe.app",
+  "author": {
+    "name": "BillAxe Team",
+    "email": "support@billaxe.app"
+  },
+  "android": {
+    "package": "com.billaxe.invoicemaker",
+    "versionCode": 1,
+    "minSdkVersion": 24,
+    "compileSdkVersion": 34,
+    "targetSdkVersion": 34,
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.CAMERA"
+    ],
+    "features": [
+      {
+        "name": "android.hardware.camera",
+        "required": false
+      },
+      {
+        "name": "android.hardware.camera.autofocus",
+        "required": false
+      }
+    ]
+  },
+  "ios": {
+    "bundleIdentifier": "com.billaxe.invoicemaker",
+    "buildNumber": "1",
+    "minimumOsVersion": "13.0"
+  },
+  "theme": {
+    "primaryColor": "#3B82F6",
+    "secondaryColor": "#1E40AF",
+    "backgroundColor": "#F9FAFB",
+    "textColor": "#111827",
+    "accentColor": "#10B981"
+  },
+  "splash": {
+    "backgroundColor": "#3B82F6",
+    "textColor": "#FFFFFF",
+    "logoPath": "client/src/assets/billaxe-logo.svg"
+  }
+}
