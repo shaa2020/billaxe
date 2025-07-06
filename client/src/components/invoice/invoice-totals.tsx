@@ -14,11 +14,11 @@ export function InvoiceTotals({ subtotal, vatTotal, grandTotal, currency }: Invo
         <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-300">Subtotal:</span>
-            <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(subtotal, currency)}</span>
+            <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(subtotal, "EUR")}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-300">VAT Total:</span>
-            <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(vatTotal, currency)}</span>
+            <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(vatTotal, "EUR")}</span>
           </div>
           <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
             <div className="flex justify-between text-lg font-bold text-gray-900 dark:text-white">
