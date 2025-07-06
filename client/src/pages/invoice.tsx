@@ -25,6 +25,7 @@ import {
   Sun
 } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
+import ProjectLogo from "@/assets/billaxe-logo.svg"; 
 
 export default function InvoicePage() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -173,8 +174,8 @@ export default function InvoicePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className="p-1 rounded-lg" style = {{backgroundColor: "white"}}>
+                {/* <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="24" cy="24" r="22" fill="currentColor" stroke="white" strokeWidth="2"/>
                   <rect x="18" y="14" width="3" height="20" fill="#8B4513" rx="1.5"/>
                   <path d="M15 16 L27 16 Q30 18 30 22 Q30 26 27 28 L15 28 Q12 24 15 16 Z" fill="#E5E7EB" stroke="#9CA3AF" strokeWidth="1"/>
@@ -184,7 +185,8 @@ export default function InvoicePage() {
                   <line x1="27" y1="27" x2="35" y2="27" stroke="#6B7280" strokeWidth="0.5"/>
                   <line x1="27" y1="29" x2="33" y2="29" stroke="#6B7280" strokeWidth="0.5"/>
                   <text x="31" y="34" fontFamily="Arial, sans-serif" fontSize="6" fontWeight="bold" fill="#10B981">$</text>
-                </svg>
+                </svg> */}
+                <img src={ProjectLogo} height={"5rem"} alt="BillAxe Logo" className="h-8 w-8" />
               </div>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900 dark:text-white">BillAxe</h1>
